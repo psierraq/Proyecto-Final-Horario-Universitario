@@ -116,4 +116,38 @@ void cargarOferta(string ruta) {
         getline(ss, sInicio, ',');
         getline(ss, sFin, ',');
         
-	       
+	    if (materia.empty() || !esNumero(sNumero) || !esNumero(sCreditos) ||
+            !esNumero(sInicio) || !esNumero(sFin)) {
+            cout << "  Linea " << numLinea << ": faltan datos o hay letras donde van numeros. Se ignora.\n";
+            errores++;
+            continue;                             // pasa a la siguiente línea
+        }
+        
+        if (indiceDia(dia) == -1) {
+            cout << "  Linea " << numLinea << ": el dia \"" << dia << "\" no es valido. Se ignora.\n";
+            errores++;
+            continue;
+        }
+
+        int numero = stoi(sNumero);               // stoi convierte texto a entero
+        int creditos = stoi(sCreditos);
+        int inicio = stoi(sInicio);
+        int fin = stoi(sFin);
+
+        
+        if (inicio >= fin || inicio < HORA_INICIO_DIA || fin > HORA_FIN_DIA) {
+            cout << "  Linea " << numLinea << ": horas invalidas (" << inicio << " a " << fin << "). Se ignora.\n";
+            errores++;
+            continue;
+        }
+        
+        if (numero <= 0 || creditos <= 0) {
+            cout << "  Linea " << numLinea << ": grupo o creditos en cero. Se ignora.\n";
+            errores++;
+            continue;
+        }
+
+        Sesion s;                                 // se arma la sesion con los datos de la linea
+        s.dia = dia;
+        s.inicio = inicio;
+        s.fin = fin;  
