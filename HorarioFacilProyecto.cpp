@@ -151,3 +151,26 @@ void cargarOferta(string ruta) {
         s.dia = dia;
         s.inicio = inicio;
         s.fin = fin;  
+        int pos = -1;                             // -1 significa "no existe todavía"
+        for (int i = 0; i < oferta.size(); i++) {
+            if (oferta[i].materia == materia && oferta[i].numero == numero) {
+                pos = i;                          // se encontró en la posición i
+                break;                            // no hace falta seguir buscando
+            }
+        }
+
+        if (pos != -1) {                          // si ya existía...
+            oferta[pos].sesiones.push_back(s);    // ...solo se le agrega esta sesión
+        } else {                                  // si no existía...
+            Grupo g;                              // ...se crea el grupo nuevo
+            g.materia = materia;
+            g.numero = numero;
+            g.creditos = creditos;
+            g.sesiones.push_back(s);              // con su primera sesión
+            oferta.push_back(g);                  // y se agrega a la oferta
+        }
+    }
+
+    archivo.close();                              // siempre se cierra el archivo al terminar
+    cout << "Se cargaron " << oferta.size() << " grupos. Lineas con error: " << errores << endl;
+}
