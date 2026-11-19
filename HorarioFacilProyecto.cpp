@@ -174,3 +174,38 @@ void cargarOferta(string ruta) {
     archivo.close();                              // siempre se cierra el archivo al terminar
     cout << "Se cargaron " << oferta.size() << " grupos. Lineas con error: " << errores << endl;
 }
+void mostrarOferta() {
+    cout << "\n===== OFERTA DE MATERIAS =====\n";
+    for (int i = 0; i < oferta.size(); i++) {     // recorre todos los grupos
+        cout << oferta[i].materia << " - Grupo " << oferta[i].numero
+             << " (" << oferta[i].creditos << " creditos)\n";
+        for (int j = 0; j < oferta[i].sesiones.size(); j++) {  // recorre las sesiones del grupo
+            Sesion s = oferta[i].sesiones[j];
+            cout << "     " << s.dia << " " << s.inicio << ":00 - " << s.fin << ":00\n";
+        }
+    }
+}
+void seleccionarMaterias() {
+   
+    vector<string> nombres;
+    for (int i = 0; i < oferta.size(); i++) {
+        bool yaEsta = false;                      
+        for (int j = 0; j < nombres.size(); j++) {
+            if (nombres[j] == oferta[i].materia) {
+                yaEsta = true;
+            }
+        }
+        if (!yaEsta) {                            
+            nombres.push_back(oferta[i].materia);
+        }
+    }
+
+    
+    cout << "\nMaterias disponibles:\n";
+    for (int i = 0; i < nombres.size(); i++) {
+        cout << "  " << i + 1 << ". " << nombres[i] << endl;  
+    }
+
+    elegidas.clear();                            
+    gruposPorMateria.clear();
+    resultados.clear();
