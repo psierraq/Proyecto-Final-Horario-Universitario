@@ -209,3 +209,76 @@ void seleccionarMaterias() {
     elegidas.clear();                            
     gruposPorMateria.clear();
     resultados.clear();
+    
+    //el usuario escribe números hasta que escriba 0
+    cout << "Escriba los numeros de las materias que quiere, uno por uno (0 para terminar):\n";
+    int opcion = leerEntero();
+    while (opcion != 0) {
+        if (opcion < 1 || opcion > nombres.size()) {           // número fuera de la lista
+            cout << "  Numero fuera de rango.\n";
+        } else {
+            string nombre = nombres[opcion - 1];  
+            bool repetida = false;                // no dejar escoger dos veces la misma
+            for (int j = 0; j < elegidas.size(); j++) {
+                if (elegidas[j] == nombre) {
+                    repetida = true;
+                }
+            }
+            if (repetida) {
+                cout << "  Ya habia escogido " << nombre << endl;
+            } else {
+                elegidas.push_back(nombre);
+                cout << "  Agregada: " << nombre << endl;
+            }
+        }
+        opcion = leerEntero();                    
+    }
+
+    
+    for (int k = 0; k < elegidas.size(); k++) {
+        vector<int> indices;
+        for (int i = 0; i < oferta.size(); i++) {
+            if (oferta[i].materia == elegidas[k]) {
+                indices.push_back(i);
+            }
+        }
+        gruposPorMateria.push_back(indices);
+    }
+    cout << "Materias escogidas: " << elegidas.size() << endl;
+}
+
+void configurarFiltros() {
+    cout << "Maximo de creditos (actual " << maxCreditos << "): ";
+    int c = leerEntero();
+    while (c < 1 || c > 40) {                     // se valida el rango
+        cout << "Debe estar entre 1 y 40: ";
+        c = leerEntero();
+    }
+    maxCreditos = c;
+
+    cout << "No tener clase antes de las (6 a 20, actual " << horaMinima << "): ";
+    int h = leerEntero();
+    while (h < 6 || h > 20) {
+        cout << "Debe estar entre 6 y 20: ";
+        h = leerEntero();
+    }
+    horaMinima = h;
+
+    cout << "Dia que quiere dejar libre:\n  0. Ninguno\n";
+    for (int i = 0; i < NUM_DIAS; i++) {
+        cout << "  " << i + 1 << ". " << DIAS[i] << endl;
+    }
+    int d = leerEntero();
+    while (d < 0 || d > NUM_DIAS) {
+        cout << "Opcion invalida: ";
+        d = leerEntero();
+    }
+    if (d == 0) {
+        diaLibre = "";                            
+    } else {
+        diaLibre = DIAS[d - 1];                   
+    }
+
+    resultados.clear();                           // los horarios de antes ya no sirven con filtros nuevos
+    cout << "Preferencias guardadas. Vuelva a generar los horarios (opcion 5).\n";
+}
